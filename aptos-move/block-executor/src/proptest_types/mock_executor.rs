@@ -22,7 +22,7 @@ use aptos_types::{
     executable::ModulePath,
     fee_statement::FeeStatement,
     state_store::{state_value::StateValueMetadata, TStateView},
-    transaction::BlockExecutableTransaction as Transaction,
+    transaction::{AuxiliaryInfo, BlockExecutableTransaction as Transaction},
     write_set::{TransactionWrite, WriteOp, WriteOpKind},
 };
 use aptos_vm_environment::environment::AptosEnvironment;
@@ -896,6 +896,7 @@ where
     K: PartialOrd + Ord + Send + Sync + Clone + Hash + Eq + ModulePath + Debug + 'static,
     E: Send + Sync + Debug + Clone + TransactionEvent + 'static,
 {
+    type AuxiliaryInfo = AuxiliaryInfo;
     type Error = usize;
     type Output = MockOutput<K, E>;
     type Txn = MockTransaction<K, E>;
@@ -912,6 +913,7 @@ where
               + BlockSynchronizationKillSwitch),
         txn: &Self::Txn,
         txn_idx: TxnIndex,
+        _auxiliary_info: &Self::AuxiliaryInfo,
     ) -> ExecutionStatus<Self::Output, Self::Error> {
         match txn {
             MockTransaction::Write {

@@ -101,4 +101,5 @@ pub mod gas_feature_versions {
     pub const RELEASE_V1_32: u64 = 36;
     pub const RELEASE_V1_33: u64 = 37;
     pub const RELEASE_V1_34: u64 = 38;
+    pub const RELEASE_V1_35: u64 = 39;
 }

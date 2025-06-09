@@ -128,10 +128,12 @@ impl DbWriter for AptosDB {
             let mut sharded_kv_batch = self.state_kv_db.new_sharded_native_batches();
             let mut state_kv_metadata_batch = SchemaBatch::new();
             // Save the target transactions, outputs, infos and events
+            // TODO[MI counter]: Check if auxiliary info needs to be saved here.
             let (transactions, outputs): (Vec<Transaction>, Vec<TransactionOutput>) =
                 output_with_proof
                     .transactions_and_outputs
                     .into_iter()
+                    .map(|(txn, output)| (txn, output))
                     .unzip();
             let events = outputs
                 .clone()
@@ -264,7 +266,7 @@ impl AptosDB {
             s.spawn(|_| {
                 self.ledger_db
                     .persisted_auxiliary_info_db()
-                    .commit_auxiliary_info(chunk.first_version, chunk.persisted_info)
+                    .commit_auxiliary_info(chunk.first_version, chunk.persisted_auxiliary_infos)
                     .unwrap()
             });
             s.spawn(|_| {
