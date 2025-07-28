@@ -170,7 +170,7 @@ impl Default for RocksdbConfigs {
                 max_open_files: 1000,
                 ..Default::default()
             },
-            enable_storage_sharding: true,
+            enable_storage_sharding: false,
         }
     }
 }
